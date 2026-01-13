@@ -3,7 +3,7 @@ const cors = require("cors");
 const { Sequelize } = require("sequelize");
 require("dotenv").config();
 const apiRoutes = require("./src/routes/index");
-const { sequelize } = require("./src/configs/db");
+const { getSequelize } = require("./src/configs/db");
 const bodyParser = require("body-parser");
 const http = require("http");
 
@@ -12,6 +12,8 @@ const server = http.createServer(app);
 const PORT = process.env.PORT || 5000;
 const { initSocket } = require("./src/socket/chatSocket");
 initSocket(server);
+const sequelize = getSequelize();
+
 
 // Middleware
 app.use(

@@ -1,5 +1,7 @@
 // const { DataTypes } = require("sequelize");
-// const sequelize = require("../configs/db").sequelize;
+// const { getSequelize } = require("../configs/db");
+
+// const sequelize = getSequelize();;
 // const User = require("./user");
 
 // const Products = sequelize.define(
@@ -45,7 +47,9 @@
 // module.exports = Products;
 
 const { DataTypes } = require("sequelize");
-const sequelize = require("../configs/db").sequelize;
+const { getSequelize } = require("../configs/db");
+
+const sequelize = getSequelize();;
 const User = require("./user");
 
 const Products = sequelize.define(

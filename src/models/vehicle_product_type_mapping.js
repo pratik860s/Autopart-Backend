@@ -1,6 +1,8 @@
 // vehicle_product_type_mapping.js
 const { DataTypes } = require("sequelize");
-const sequelize = require("../configs/db").sequelize;
+const { getSequelize } = require("../configs/db");
+
+const sequelize = getSequelize();;
 
 const VehicleProductType = sequelize.define(
   "vehicle_product_type_mapping",
@@ -46,7 +48,9 @@ const VehicleProductType = sequelize.define(
 module.exports = VehicleProductType;
 
 // const { DataTypes } = require("sequelize");
-// const sequelize = require("../configs/db").sequelize;
+// const { getSequelize } = require("../configs/db");
+
+// const sequelize = getSequelize();;
 
 // const VehicleProductType = sequelize.define(
 //   "vehicle_product_type",

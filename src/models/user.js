@@ -1,5 +1,7 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("../configs/db").sequelize;
+const { getSequelize } = require("../configs/db");
+
+const sequelize = getSequelize();
 
 const User = sequelize.define(
   "Users",
@@ -75,15 +77,6 @@ const User = sequelize.define(
     isCompanydetailsFilled: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
-      field: "isCompanydetailsFilled",
-    },
-    created_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
     },
     type: {
       type: DataTypes.ENUM("buyer", "seller", "admin"),

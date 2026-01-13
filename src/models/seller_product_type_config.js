@@ -1,5 +1,7 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("../configs/db").sequelize;
+const { getSequelize } = require("../configs/db");
+
+const sequelize = getSequelize();;
 
 const SellerProductTypeConfig = sequelize.define(
   "seller_product_type_config",

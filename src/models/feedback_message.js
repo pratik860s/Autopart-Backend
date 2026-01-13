@@ -1,7 +1,8 @@
 // src/models/feedback_message.js
 const { DataTypes } = require("sequelize");
-const { sequelize } = require("../configs/db");
+const { getSequelize } = require("../configs/db");
 
+const sequelize = getSequelize();
 const FeedbackMessage = sequelize.define(
   "feedback_message",
   {
