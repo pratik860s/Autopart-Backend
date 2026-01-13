@@ -1,4 +1,5 @@
 const { Sequelize } = require("sequelize");
+const pg = require("pg"); // 👈 THIS IS THE KEY FIX
 
 let sequelize;
 
@@ -10,7 +11,8 @@ function getSequelize() {
       process.env.DB_PASSWORD,
       {
         host: process.env.DB_HOST,
-        dialect: "postgres", // ✅ FIXED
+        dialect: "postgres",
+        dialectModule: pg, // 👈 FORCE Sequelize to use pg
         logging: false,
         pool: {
           max: 5,
