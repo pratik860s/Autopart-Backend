@@ -15,14 +15,23 @@ initSocket(server);
 const sequelize = getSequelize();
 
 
-// Middleware
+
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL, process.env.ADMIN_FRONTEND_URL],
-    // origin: "*",
+    origin: [
+      "http://localhost:5173", // local dev (Vite)
+      "http://localhost:3000", // if needed
+      "https://autopart-frontent-master-6jmw.vercel.app", // PROD FRONTEND
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
+
+// IMPORTANT for preflight
+app.use(cors());
+
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 app.use(express.json());
