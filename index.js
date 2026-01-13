@@ -8,12 +8,13 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
-/* ---------- CORS (MUST BE FIRST) ---------- */
+/* ---------- CORS (FIRST) ---------- */
 app.use(
   cors({
     origin: [
       "http://localhost:5173",
       "http://localhost:3000",
+      "https://autopart-frontent-master.vercel.app",
       "https://autopart-frontent-master-6jmw.vercel.app",
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -41,5 +42,8 @@ sequelize
   .then(() => console.log("PostgreSQL connected"))
   .catch((err) => console.error("DB connection failed:", err));
 
-/* ---------- EXPORT (REQUIRED FOR VERCEL) ---------- */
-module.exports = app;
+/* ---------- START SERVER (REQUIRED FOR RAILWAY) ---------- */
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
