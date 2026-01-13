@@ -1,0 +1,139 @@
+const { transporter } = require("../utils/mailer");
+
+/**
+ * Send email to a user
+ * @param {Object} options - Email options
+ * @param {string} options.to - Recipient email
+ * @param {string} options.subject - Email subject
+ * @param {string} options.html - Email content in HTML format
+ * @param {string} [options.from] - Sender email (optional, defaults to FROM_EMAIL env variable)
+ */
+const sendEmail = async ({
+  to,
+  subject,
+  html,
+  from = process.env.FROM_EMAIL,
+}) => {
+  try {
+    const mailOptions = {
+      from,
+      to,
+      subject,
+      html,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    return info;
+  } catch (error) {
+    console.error("Error sending email:", error);
+    throw error;
+  }
+};
+
+/**
+ * Send admin notification email
+ * @param {Object} options - Notification options
+ * @param {string} options.to - Recipient email
+ * @param {string} options.type - Type of notification (user_status, seller_verification, etc.)
+ * @param {Object} options.data - Data for the email template
+ */
+const sendAdminNotification = async ({ to, type, data }) => {
+  const templates = {
+    user_status: {
+      subject: "Account Status Update",
+      html: `
+                <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; border: 1px solid #eee; border-radius: 8px; padding: 32px 24px; background: #fafbfc;">
+                    <h2 style="color: #2d3748;">Account Status Update</h2>
+                    <p style="font-size: 16px; color: #333;">
+                        Your account status has been updated to: <strong>${
+                          data.status
+                        }</strong>
+                    </p>
+                    ${
+                      data.reason
+                        ? `<p style="color: #666;">Reason: ${data.reason}</p>`
+                        : ""
+                    }
+                    <hr style="margin: 32px 0;">
+                    <p style="font-size: 12px; color: #999;">
+                        If you have any questions, please contact our support team.
+                    </p>
+                </div>
+            `,
+    },
+    seller_verification: {
+      subject: "Seller Account Verification",
+      html: `
+                <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; border: 1px solid #eee; border-radius: 8px; padding: 32px 24px; background: #fafbfc;">
+                    <h2 style="color: #2d3748;">Seller Account Verified</h2>
+                    <p style="font-size: 16px; color: #333;">
+                        Congratulations! Your seller account has been verified.
+                    </p>
+                    <p style="font-size: 16px; color: #333;">
+                        You can now start listing your products and receiving enquiries.
+                    </p>
+                    <hr style="margin: 32px 0;">
+                    <p style="font-size: 12px; color: #999;">
+                        If you have any questions, please contact our support team.
+                    </p>
+                </div>
+            `,
+    },
+    quotation_status: {
+      subject: "Quotation Status Update",
+      html: `
+                <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; border: 1px solid #eee; border-radius: 8px; padding: 32px 24px; background: #fafbfc;">
+                    <h2 style="color: #2d3748;">Quotation Status Update</h2>
+                    <p style="font-size: 16px; color: #333;">
+                        Your quotation status has been updated to: <strong>${
+                          data.status
+                        }</strong>
+                    </p>
+                    ${
+                      data.remarks
+                        ? `<p style="color: #666;">Remarks: ${data.remarks}</p>`
+                        : ""
+                    }
+                    <hr style="margin: 32px 0;">
+                    <p style="font-size: 12px; color: #999;">
+                        If you have any questions, please contact our support team.
+                    </p>
+                </div>
+            `,
+    },
+    feedback_reply: {
+      subject: "New Reply to Your Feedback",
+      html: `
+                <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; border: 1px solid #eee; border-radius: 8px; padding: 32px 24px; background: #fafbfc;">
+                    <h2 style="color: #2d3748;">New Reply to Your Feedback</h2>
+                    <p style="font-size: 16px; color: #333;">
+                        An admin has replied to your feedback:
+                    </p>
+                    <div style="background: #f8f9fa; padding: 16px; border-radius: 4px; margin: 16px 0;">
+                        <p style="margin: 0;">${data.reply}</p>
+                    </div>
+                    <hr style="margin: 32px 0;">
+                    <p style="font-size: 12px; color: #999;">
+                        If you have any questions, please contact our support team.
+                    </p>
+                </div>
+            `,
+    },
+  };
+
+  const template = templates[type];
+  if (!template) {
+    throw new Error(`No email template found for type: ${type}`);
+  }
+
+  return sendEmail({
+    to,
+    subject: template.subject,
+    html: template.html,
+  });
+};
+
+module.exports = {
+  sendEmail,
+  sendAdminNotification,
+};

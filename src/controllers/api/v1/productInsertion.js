@@ -1,0 +1,105 @@
+const express = require("express");
+const router = express.Router();
+const ProductType = require("../../../models/product_type");
+
+const productTypes = [
+  "A Post Moulding",
+  "A-Post (Left)",
+  "A-Post (Right)",
+  "A/C Assembly",
+  "A/C Compressor",
+  "A/C Cooling Module",
+  "A/C Dryer",
+  "A/C Evaporator",
+  "A/C Expansion Valve",
+  "A/C Hose",
+  "A/C Line",
+  "A/C Pipe",
+  "A/C Pressure Sensor",
+  "A/C Radiator",
+  "A/C Relay",
+  "A/C Switch",
+  "A/C Unit",
+  "ABS Pump",
+  "Accelerator Pedal",
+  "Air Filter Box",
+  "Air Flow Meter",
+  "Airbag",
+  "Alternator",
+  "Armrest",
+  "Axle (Front)",
+  "Axle (Rear)",
+  "Back Door",
+  "Battery",
+  "Bonnet",
+  "Bonnet Hinge",
+  "Bonnet Latch",
+  "Brake Booster",
+  "Brake Caliper",
+  "Brake Disc",
+  "Brake Drum",
+  "Brake Master Cylinder",
+  "Bumper (Front)",
+  "Bumper (Rear)",
+  "Carburetor",
+  "Clutch Assembly",
+  "Control Arm",
+  "Dashboard",
+  "Differential",
+  "Door Handle",
+  "Door Mirror (Left)",
+  "Door Mirror (Right)",
+  "Driveshaft",
+  "ECU",
+  "Engine Mount",
+  "Exhaust Manifold",
+  "Fan Motor",
+  "Fog Lamp",
+  "Fuel Injector",
+  "Fuel Pump",
+  "Gearbox",
+  "Grille",
+  "Headlamp (Left)",
+  "Headlamp (Right)",
+  "Horn",
+  "Ignition Coil",
+  "Ignition Switch",
+  "Instrument Cluster",
+  "Interior Trim",
+  "Radiator",
+  "Radiator Fan",
+  "Rear Light (Left)",
+  "Rear Light (Right)",
+  "Seat Belt",
+  "Shock Absorber (Front)",
+  "Shock Absorber (Rear)",
+  "Side Skirt",
+  "Speedometer",
+  "Starter Motor",
+  "Steering Column",
+  "Steering Rack",
+  "Sunroof Motor",
+  "Tailgate",
+  "Throttle Body",
+  "Timing Belt",
+  "Turbocharger",
+  "Washer Bottle",
+  "Window Motor",
+  "Wiper Arm",
+  "Wiper Motor",
+];
+
+exports.ProductInsert = async (req, res) => {
+  try {
+    await ProductType.bulkCreate(
+      productTypes.map((name) => ({ name })),
+      { ignoreDuplicates: true }
+    );
+    res.status(201).json({ message: "Product types seeded successfully" });
+  } catch (error) {
+    console.error("Seeding error:", error);
+    res.status(500).json({ error: "Failed to seed product types" });
+  }
+};
+
+
